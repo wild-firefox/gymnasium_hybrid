@@ -14,7 +14,10 @@
 cd path/to/gymnasium_hybrid
 pip install -e .
 ```
-
+or 
+```bash
+pip install git+https://github.com/wild-firefox/gymnasium_hybrid.git
+```
 ## 示例用法
 
 ```python
