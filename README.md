@@ -37,6 +37,8 @@ for _ in range(1000):
 
 env.close()
 ```
+详细请看tests文件夹中的示例代码。  
+**注**HardMove为DI-engine中新增的环境，暂时没有渲染器。
 
 ## 致谢
 

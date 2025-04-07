@@ -3,7 +3,7 @@ import gymnasium as gym
 import gymnasium_hybrid
 
 if __name__ == '__main__':
-    env = gym.make('Sliding-v0', render_mode='rgb_array')
+    env = gym.make('Sliding-v0', render_mode='human')
     env.reset()
 
     # done = False

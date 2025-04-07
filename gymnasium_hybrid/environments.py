@@ -57,7 +57,7 @@ class BaseEnv(gym.Env):
     """
     # 添加这个metadata声明
     metadata = {
-        "render_modes": [ "rgb_array"],
+        "render_modes": ["human", "rgb_array"],
         "render_fps": 30,
     }
 
@@ -188,7 +188,7 @@ class BaseEnv(gym.Env):
     def get_distance(x1: float, y1: float, x2: float, y2: float) -> float:
         return np.sqrt(((x1 - x2) ** 2) + ((y1 - y2) ** 2)).item()
 
-    # 修改render方法
+        # 修改render方法
     def render(self):
         """根据render_mode渲染环境"""
         if self.render_mode is None:
@@ -271,11 +271,15 @@ class BaseEnv(gym.Env):
             pygame.event.pump()
             pygame.display.flip()
             
+            # 根据渲染模式返回不同结果
             if self.render_mode == "rgb_array":
                 return np.transpose(
                     pygame.surfarray.array3d(self.window), axes=(1, 0, 2)
                 )
-            else:
+            elif self.render_mode == "human":
+                # human模式下控制帧率
+                if self.clock is not None:
+                    self.clock.tick(self.metadata["render_fps"])
                 return None
                 
         except ImportError:
@@ -349,6 +353,11 @@ class HardMoveEnv(gym.Env):
     """"
     HardMove environment. Please refer to https://arxiv.org/abs/2109.05490 for details.
     """
+    # 添加metadata
+    metadata = {
+        "render_modes": ["human", "rgb_array"],
+        "render_fps": 30,
+    }
 
     def __init__(
         self,
