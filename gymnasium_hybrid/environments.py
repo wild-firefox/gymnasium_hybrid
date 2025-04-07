@@ -204,16 +204,25 @@ class BaseEnv(gym.Env):
             import pygame
             from pygame import gfxdraw
             
+            # 为rgb_array模式设置无头渲染
+            if self.render_mode == "rgb_array":
+                import os
+                os.environ['SDL_VIDEODRIVER'] = 'dummy'
+            
             if self.window is None:
                 pygame.init()
                 pygame.display.init()
-                self.window = pygame.display.set_mode((screen_width, screen_height))
+                if self.render_mode == "human":
+                    self.window = pygame.display.set_mode((screen_width, screen_height))
+                else:  # rgb_array模式使用Surface而非真实窗口
+                    self.window = pygame.Surface((screen_width, screen_height))
                 if hasattr(self, "clock"):
                     self.clock = pygame.time.Clock()
             
+            # 其余渲染代码保持不变
             canvas = pygame.Surface((screen_width, screen_height))
-            canvas.fill((255, 255, 255))  # 填充白色背景
-            
+            canvas.fill((255, 255, 255))
+                
             # 画目标点
             target_x = int(unit_x * (1 + self.target.x))
             target_y = int(unit_y * (1 + self.target.y))
@@ -266,24 +275,24 @@ class BaseEnv(gym.Env):
             pygame.draw.rect(canvas, (60, 60, 30), pygame.Rect(0, screen_height-6, screen_width, 6))
             pygame.draw.rect(canvas, (60, 60, 30), pygame.Rect(screen_width-6, 0, 6, screen_height))
             
-            # 显示到窗口
+            # 显示到窗口或Surface
             self.window.blit(canvas, (0, 0))
-            pygame.event.pump()
-            pygame.display.flip()
             
-            # 根据渲染模式返回不同结果
+            # 只在human模式下更新显示
+            if self.render_mode == "human":
+                pygame.event.pump()
+                pygame.display.flip()
+                if self.clock is not None:
+                    self.clock.tick(self.metadata["render_fps"])
+            
+            # rgb_array模式下只返回图像数组
             if self.render_mode == "rgb_array":
                 return np.transpose(
                     pygame.surfarray.array3d(self.window), axes=(1, 0, 2)
                 )
-            elif self.render_mode == "human":
-                # human模式下控制帧率
-                if self.clock is not None:
-                    self.clock.tick(self.metadata["render_fps"])
-                return None
+            return None
                 
         except ImportError:
-            # 如果无法导入pygame，返回None
             return None
 
     def close(self):
