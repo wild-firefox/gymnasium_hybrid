@@ -1,5 +1,5 @@
 import gymnasium as gym
-import gym_hybrid
+import gymnasium_hybrid
 
 if __name__ == '__main__':
     env = gym.make('Sliding-v0', render_mode="rgb_array")
