@@ -6,7 +6,7 @@ setup(
     packages=["gymnasium_hybrid"],
     include_package_data=True,
     package_data={
-        "gymnasium_hybrid": ["*.png", "*.jpg", "assets/*"],
+        "gymnasium_hybrid": ["*.png", "*.jpg"],
     },
     install_requires=[
         "gymnasium>=1.0.0",
