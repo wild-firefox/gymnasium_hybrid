@@ -12,7 +12,7 @@ setup(
         "gymnasium>=1.0.0",
         "numpy",
         "pygame>=2.3.0",
-        "opencv-python",
-        "moviepy",
+        "opencv-python>=4.11.0.86",
+        "moviepy>=2.1.2",
     ],
 )
