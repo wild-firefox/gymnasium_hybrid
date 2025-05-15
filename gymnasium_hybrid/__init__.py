@@ -9,14 +9,14 @@ from gymnasium_hybrid.environments import HardMoveEnv
 # )
 register(
     id='Moving-v0',
-    entry_point='gym_hybrid:MovingEnv',
+    entry_point='gymnasium_hybrid:MovingEnv',
 )
 
 register(
     id='Sliding-v0',
-    entry_point='gym_hybrid:SlidingEnv',
+    entry_point='gymnasium_hybrid:SlidingEnv',
 )
 register(
     id='HardMove-v0',
-    entry_point='gym_hybrid:HardMoveEnv',
+    entry_point='gymnasium_hybrid:HardMoveEnv',
 )
